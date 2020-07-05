@@ -12,7 +12,7 @@ public class DonationNotify extends Observable {
 	public DonationNotify(MainWindow mw, ArrayList<GroceryItemBuffer> list) {
 		this.list = list;
 		this.addObserver(mw);
-		checkWaste();
+		//checkWaste();
 		
 	}
 	
@@ -28,8 +28,6 @@ public class DonationNotify extends Observable {
 			}
 			msg = Integer.toString(count) + "items will expire in 2 days! Take action!";
 		}
-		if(list == null || count == 0)
-			msg = "All good!";
 		setChanged();
 		notifyObservers(msg);
 		

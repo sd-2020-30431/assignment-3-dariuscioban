@@ -1,5 +1,6 @@
 package reports;
 
+import java.awt.Color;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,9 +13,13 @@ import model.GroceryItem;
 public class WeeklyReport implements Report{
 
 	private int userid;
+	private Color color;
+	public Boolean isIdeal;
 	
 	public WeeklyReport(int userid) {
 		this.userid = userid;
+		this.color = Color.green;
+		this.isIdeal = true;
 	}
 	
 	public String printReport() {
@@ -28,6 +33,16 @@ public class WeeklyReport implements Report{
 				caloriesToExpire += item.getCalories();
 		}
 		String report = "If not consumed, " + caloriesToExpire + " calories will expire in the following week! Consider donating.";
+		if((caloriesToExpire / 7) >= 20)
+			isIdeal = false;
 		return report;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
 	}
 }

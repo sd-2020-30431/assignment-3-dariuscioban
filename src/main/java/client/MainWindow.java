@@ -18,11 +18,14 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import communication.GroceryItemBuffer;
 import factory.AbstractFactory;
 import factory.FactoryProvider;
+import reports.Report;
 import reports.ReportType;
+import reports.WeeklyReport;
 
 public class MainWindow implements Observer{
 	
@@ -252,16 +255,19 @@ public class MainWindow implements Observer{
 			}
 			if(action.equals("burn")) {
 				updateItemListRequest();
-				String msg = getReportMsg();
-				JOptionPane.showMessageDialog(frame, msg, "Burndown", JOptionPane.INFORMATION_MESSAGE);
+				WeeklyReport rep = (WeeklyReport) getReport();
+				Decorator dec = new Decorator(rep);
+				Object def = UIManager.get("JOptionPane.background");
+				UIManager.put("JOptionPane.background", dec.getColor());
+				JOptionPane.showMessageDialog(frame, dec.getMsg(), "Burndown", JOptionPane.INFORMATION_MESSAGE);
+				UIManager.put("OptionPane.background", def);
 			}
 		}
 	}
 	
-	private String getReportMsg() {
+	private Report getReport() {
 		AbstractFactory f = FactoryProvider.getFactory(ReportType.WEEKLY);
-		String msg = f.createReport(userId).printReport();
-		return msg;
+		return f.createReport(userId);
 	}
 	
 	private JTable createTable() {
